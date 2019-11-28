@@ -1,8 +1,8 @@
 import * as tf from '@tensorflow/tfjs';
 import * as posenet from '@tensorflow-models/posenet';
 import '@babel/polyfill'
-const color = 'aqua';
-const lineWidth = 2;
+const color = 'green';
+const lineWidth = 20;
 
 function toTuple({ y, x }) {
   return [y, x];
@@ -126,7 +126,7 @@ function drawPoints(ctx, points, radius, color) {
     if (pointX !== 0 && pointY !== 0) {
       ctx.beginPath();
       ctx.arc(pointX, pointY, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = color;
+      ctx.fillStyle = 'red';
       ctx.fill();
     }
   }

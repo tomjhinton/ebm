@@ -9,6 +9,16 @@ const videoWidth = 600;
 const videoHeight = 500;
 const stats = new Stats();
 
+import Tone from 'tone'
+var tremolo = new Tone.Tremolo().start()
+var pingPong = new Tone.PingPongDelay('4n', 0.2).toMaster()
+var autoWah = new Tone.AutoWah(50, 6, -30).toMaster()
+var freeverb = new Tone.Freeverb().toMaster()
+freeverb.dampening.value = 500
+const synthA =  new Tone.DuoSynth().toMaster().chain(tremolo, pingPong, autoWah)
+synthA.attack = 0.01
+
+
 function isAndroid() {
   return /Android/i.test(navigator.userAgent);
 }
@@ -166,8 +176,8 @@ function setupGui(cameras, net) {
  * Sets up a frames per second panel on the top-left of the window
  */
 function setupFPS() {
-  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-  document.body.appendChild(stats.dom);
+  //stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+  //document.body.appendChild(stats.dom);
 }
 
 /**
@@ -201,13 +211,20 @@ function detectPoseInRealTime(video, net) {
     const imageScaleFactor = guiState.input.imageScaleFactor;
     const outputStride = Number(guiState.input.outputStride);
 
-    let poses = [];
+    let poses = []
+    // console.log(poses)
+    // console.log(poses.keypoints)
     let minPoseConfidence;
     let minPartConfidence;
     switch (guiState.algorithm) {
       case 'single-pose':
         const pose = await guiState.net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride);
         poses.push(pose);
+        // console.log(pose.keypoints)
+        if(pose.keypoints[9].position.x > 500){
+          synthA.triggerAttackRelease(200,0.01)
+          console.log('hiya')
+        }
 
         minPoseConfidence = Number(
           guiState.singlePoseDetection.minPoseConfidence);
@@ -225,7 +242,10 @@ function detectPoseInRealTime(video, net) {
         break;
     }
 
-    ctx.clearRect(0, 0, videoWidth, videoHeight);
+    ctx.clearRect(0, 0, videoWidth, videoHeight)
+    ctx.fillStyle = 'rgba(0,250,0,04)'
+
+    ctx.fillRect(0, 0, videoWidth, videoHeight);
 
     if (guiState.output.showVideo) {
       ctx.save();
@@ -251,7 +271,16 @@ function detectPoseInRealTime(video, net) {
 
     // End monitoring code for frames per second
     stats.end();
+    var grd2 = ctx.createLinearGradient(0, 0, videoWidth, videoHeight)
+    grd2.addColorStop(0.8, '#8ED6FF')
 
+    grd2.addColorStop(0.2, '#EE4CB3')
+
+
+
+    ctx.fillStyle = grd2
+    ctx.globalAlpha = 0.3
+    ctx.fillRect(0, 0, videoWidth, videoHeight);
     requestAnimationFrame(poseDetectionFrame);
   }
 
@@ -282,7 +311,8 @@ export async function bindPage() {
 
   setupGui([], net);
   setupFPS();
-  detectPoseInRealTime(video, net);
+  detectPoseInRealTime(video, net)
+  ;
 }
 
 navigator.getUserMedia = navigator.getUserMedia ||
