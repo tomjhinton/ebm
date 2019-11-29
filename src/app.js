@@ -4,7 +4,7 @@ import dat from 'dat.gui';
 import Stats from 'stats.js';
 import * as posenet from '@tensorflow-models/posenet';
 
-import { drawKeypoints, drawSkeleton } from './demo_util';
+import { drawKeypoints, drawSkeleton, drawHeatMapValues } from './demo_util';
 const videoWidth = 600;
 const videoHeight = 500;
 const stats = new Stats();
@@ -17,7 +17,7 @@ var freeverb = new Tone.Freeverb().toMaster()
 freeverb.dampening.value = 500
 const synthA =  new Tone.DuoSynth().toMaster().chain(tremolo, pingPong, autoWah)
 synthA.attack = 0.01
-
+let color = 'rgba(0,250,0,0.4)'
 
 function isAndroid() {
   return /Android/i.test(navigator.userAgent);
@@ -221,9 +221,11 @@ function detectPoseInRealTime(video, net) {
         const pose = await guiState.net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride);
         poses.push(pose);
         // console.log(pose.keypoints)
-        if(pose.keypoints[9].position.x > 500){
-          synthA.triggerAttackRelease(200,0.01)
+        //color = `rgba(${pose.keypoints[9].position.x/100},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`
+        if(pose.keypoints[9].position.y > 200){
+          synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
           console.log('hiya')
+
         }
 
         minPoseConfidence = Number(
@@ -243,9 +245,7 @@ function detectPoseInRealTime(video, net) {
     }
 
     ctx.clearRect(0, 0, videoWidth, videoHeight)
-    ctx.fillStyle = 'rgba(0,250,0,04)'
 
-    ctx.fillRect(0, 0, videoWidth, videoHeight);
 
     if (guiState.output.showVideo) {
       ctx.save();
@@ -265,6 +265,7 @@ function detectPoseInRealTime(video, net) {
         }
         if (guiState.output.showSkeleton) {
           drawSkeleton(keypoints, minPartConfidence, ctx);
+
         }
       }
     });
@@ -272,7 +273,7 @@ function detectPoseInRealTime(video, net) {
     // End monitoring code for frames per second
     stats.end();
     var grd2 = ctx.createLinearGradient(0, 0, videoWidth, videoHeight)
-    grd2.addColorStop(0.8, '#8ED6FF')
+    grd2.addColorStop(0.8, color)
 
     grd2.addColorStop(0.2, '#EE4CB3')
 

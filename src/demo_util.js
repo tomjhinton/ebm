@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import * as posenet from '@tensorflow-models/posenet';
 import '@babel/polyfill'
-const color = 'green';
+const color = 'white';
 const lineWidth = 20;
 
 function toTuple({ y, x }) {
@@ -16,6 +16,7 @@ export function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
   ctx.moveTo(ax * scale, ay * scale);
   ctx.lineTo(bx * scale, by * scale);
   ctx.lineWidth = lineWidth;
+  ctx.globalAlpha = 1
   ctx.strokeStyle = color;
   ctx.stroke();
 }
