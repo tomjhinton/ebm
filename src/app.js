@@ -19,9 +19,9 @@ const synthA =  new Tone.DuoSynth().toMaster().chain(tremolo, pingPong, autoWah)
 synthA.attack = 0.01
 
 var sampler = new Tone.Sampler({
-	"C3" : "/samples/Clap.wav",
-	"D#3" : "/samples/Kick.wav",
-	"F#3" : "/samples/Snare.wav",
+	"C3" : "samples/Clap.wav",
+	"D#3" : "samples/Kick.wav",
+	"F#3" : "samples/Snare.wav",
 
 }, function(){
 	//sampler will repitch the closest sample
