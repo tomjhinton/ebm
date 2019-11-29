@@ -226,6 +226,25 @@ function detectPoseInRealTime(video, net) {
     let poses = []
     // console.log(poses)
     // console.log(poses.keypoints)
+    ctx.fillStyle = `rgba(250,250,250,1)`
+    ctx.fillRect(100, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(250,0,250,1)`
+    ctx.fillRect(300, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(0,250,250,1)`
+    ctx.fillRect(500, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(250,0,50,1)`
+    ctx.fillRect(700, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(0,50,250,1)`
+    ctx.fillRect(900, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(100,50,100,1)`
+    ctx.fillRect(1100, 200, 70, 70)
+
+
     let minPoseConfidence;
     let minPartConfidence;
     switch (guiState.algorithm) {
@@ -234,12 +253,63 @@ function detectPoseInRealTime(video, net) {
         poses.push(pose);
         // console.log(pose.keypoints)
         //color = `rgba(${pose.keypoints[9].position.x/100},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`
-        if(pose.keypoints[9].position.y > 200){
+
+        //left square
+        if(pose.keypoints[9].position.x > 100  && pose.keypoints[9].position.x < 170 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
           //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
           console.log('hiya')
-          //sampler.triggerAttackRelease('D3', 1)
+          sampler.triggerAttackRelease('D3', 1)
 
         }
+        // 2nd square
+        if(pose.keypoints[9].position.x > 300  && pose.keypoints[9].position.x < 370 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+          console.log('hiya2')
+          sampler.triggerAttackRelease('E3', 1)
+
+        }
+
+
+        // 3nd square
+        if(pose.keypoints[9].position.x > 500  && pose.keypoints[9].position.x < 570 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+          console.log('hiya2')
+          sampler.triggerAttackRelease('F3', 1)
+
+        }
+
+
+        if(pose.keypoints[9].position.x > 700  && pose.keypoints[9].position.x < 770 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+          console.log('hiya2')
+          sampler.triggerAttackRelease('G3', 1)
+
+        }
+
+        if(pose.keypoints[9].position.x > 900  && pose.keypoints[9].position.x < 970 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+          console.log('hiya2')
+          sampler.triggerAttackRelease('A5', 1)
+
+        }
+
+
+        if(pose.keypoints[9].position.x > 1100  && pose.keypoints[9].position.x < 1170 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+          console.log('hiya2')
+          sampler.triggerAttackRelease('A9', 1)
+
+        }
+
+
+
+
+
+
+
+
+
+
 
         minPoseConfidence = Number(
           guiState.singlePoseDetection.minPoseConfidence);
