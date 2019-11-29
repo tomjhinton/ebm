@@ -61,6 +61,7 @@ export function drawKeypoints(keypoints, minConfidence, ctx, scale = 1) {
     }
 
     function drawPoint(ctx, y, x, r, color) {
+
       ctx.beginPath()
       ctx.arc(x, y, r, 0, 2 * Math.PI)
       ctx.fillStyle = color
@@ -69,10 +70,10 @@ export function drawKeypoints(keypoints, minConfidence, ctx, scale = 1) {
 
 
     const { y, x } = keypoint.position;
-    ctx.beginPath();
-    ctx.arc(x * scale, y * scale, 3, 0, 2 * Math.PI);
-    ctx.fillStyle = color;
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(x * scale, y * scale, 3, 0, 2 * Math.PI);
+    // ctx.fillStyle = color;
+    // ctx.fill();
   }
 }
 
