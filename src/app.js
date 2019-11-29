@@ -3,9 +3,9 @@
 import dat from 'dat.gui';
 import Stats from 'stats.js';
 import * as posenet from '@tensorflow-models/posenet';
-
+import './style.scss'
 import { drawKeypoints, drawSkeleton, drawHeatMapValues } from './demo_util';
-const videoWidth = 600;
+const videoWidth = 1250;
 const videoHeight = 500;
 const stats = new Stats();
 
@@ -17,6 +17,18 @@ var freeverb = new Tone.Freeverb().toMaster()
 freeverb.dampening.value = 500
 const synthA =  new Tone.DuoSynth().toMaster().chain(tremolo, pingPong, autoWah)
 synthA.attack = 0.01
+
+var sampler = new Tone.Sampler({
+	"C3" : "/samples/Clap.wav",
+	"D#3" : "/samples/Kick.wav",
+	"F#3" : "/samples/Snare.wav",
+
+}, function(){
+	//sampler will repitch the closest sample
+	sampler.triggerAttack("D3")
+}).toMaster()
+
+
 let color = 'rgba(0,250,0,0.4)'
 
 function isAndroid() {
@@ -223,8 +235,9 @@ function detectPoseInRealTime(video, net) {
         // console.log(pose.keypoints)
         //color = `rgba(${pose.keypoints[9].position.x/100},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`
         if(pose.keypoints[9].position.y > 200){
-          synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
           console.log('hiya')
+          //sampler.triggerAttackRelease('D3', 1)
 
         }
 
@@ -282,6 +295,26 @@ function detectPoseInRealTime(video, net) {
     ctx.fillStyle = grd2
     ctx.globalAlpha = 0.3
     ctx.fillRect(0, 0, videoWidth, videoHeight);
+    ctx.globalAlpha = 0.8
+    ctx.fillStyle = `rgba(250,250,250,1)`
+    ctx.fillRect(100, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(250,0,250,1)`
+    ctx.fillRect(300, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(0,250,250,1)`
+    ctx.fillRect(500, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(250,0,50,1)`
+    ctx.fillRect(700, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(0,50,250,1)`
+    ctx.fillRect(900, 200, 70, 70)
+
+    ctx.fillStyle = `rgba(100,50,100,1)`
+    ctx.fillRect(1100, 200, 70, 70)
+
+
     requestAnimationFrame(poseDetectionFrame);
   }
 
