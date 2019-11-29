@@ -50,7 +50,7 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({ 'window.decomp': 'poly-decomp' }),
     new CopyWebpackPlugin([
-      { from: 'src/images', to: 'images' }
+      { from: 'src/samples', to: 'samples' }
     ])
   ]
 }
