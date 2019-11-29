@@ -3,6 +3,8 @@ import * as posenet from '@tensorflow-models/posenet';
 import '@babel/polyfill'
 const color = 'white';
 const lineWidth = 20;
+const colorLeft = 'blue'
+const colorRight = 'red'
 
 function toTuple({ y, x }) {
   return [y, x];
@@ -44,6 +46,27 @@ export function drawKeypoints(keypoints, minConfidence, ctx, scale = 1) {
     if (keypoint.score < minConfidence) {
       continue;
     }
+
+    const leftWrist = keypoints.find(point => point.part === 'leftWrist');
+    const rightWrist = keypoints.find(point => point.part === 'rightWrist');
+
+    if (leftWrist.score > minConfidence) {
+        const {y, x} = leftWrist.position;
+        drawPoint(ctx, y * scale, x * scale, 10, colorLeft);
+    }
+
+    if (rightWrist.score > minConfidence) {
+        const {y, x} = rightWrist.position;
+        drawPoint(ctx, y * scale, x * scale, 10, colorRight);
+    }
+
+    function drawPoint(ctx, y, x, r, color) {
+      ctx.beginPath()
+      ctx.arc(x, y, r, 0, 2 * Math.PI)
+      ctx.fillStyle = color
+      ctx.fill()
+    }
+
 
     const { y, x } = keypoint.position;
     ctx.beginPath();

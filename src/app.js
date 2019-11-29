@@ -1,13 +1,13 @@
 
 
-import dat from 'dat.gui';
-import Stats from 'stats.js';
-import * as posenet from '@tensorflow-models/posenet';
+import dat from 'dat.gui'
+import Stats from 'stats.js'
+import * as posenet from '@tensorflow-models/posenet'
 import './style.scss'
-import { drawKeypoints, drawSkeleton, drawHeatMapValues } from './demo_util';
-const videoWidth = 1250;
-const videoHeight = 500;
-const stats = new Stats();
+import { drawKeypoints, drawSkeleton, drawHeatMapValues } from './demo_util'
+const videoWidth = 1250
+const videoHeight = 500
+const stats = new Stats()
 
 import Tone from 'tone'
 var tremolo = new Tone.Tremolo().start()
@@ -19,28 +19,28 @@ const synthA =  new Tone.DuoSynth().toMaster().chain(tremolo, pingPong, autoWah)
 synthA.attack = 0.01
 
 var sampler = new Tone.Sampler({
-	"C3" : "samples/Clap.wav",
-	"D#3" : "samples/Kick.wav",
-	"F#3" : "samples/Snare.wav",
+  'C3': 'samples/Clap.wav',
+  'D#3': 'samples/Kick.wav',
+  'F#3': 'samples/Snare.wav'
 
 }, function(){
-	//sampler will repitch the closest sample
-	sampler.triggerAttack("D3")
+  //sampler will repitch the closest sample
+  //sampler.triggerAttack("D3")
 }).toMaster()
 
 
-let color = 'rgba(0,250,0,0.4)'
+const color = 'rgba(0,250,0,0.4)'
 
 function isAndroid() {
-  return /Android/i.test(navigator.userAgent);
+  return /Android/i.test(navigator.userAgent)
 }
 
 function isiOS() {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
 }
 
 function isMobile() {
-  return isAndroid() || isiOS();
+  return isAndroid() || isiOS()
 }
 
 /**
@@ -49,35 +49,35 @@ function isMobile() {
  */
 async function setupCamera() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    throw 'Browser API navigator.mediaDevices.getUserMedia not available';
+    throw 'Browser API navigator.mediaDevices.getUserMedia not available'
   }
 
-  const video = document.getElementById('video');
-  video.width = videoWidth;
-  video.height = videoHeight;
+  const video = document.getElementById('video')
+  video.width = videoWidth
+  video.height = videoHeight
 
-  const mobile = isMobile();
+  const mobile = isMobile()
   const stream = await navigator.mediaDevices.getUserMedia({
     'audio': false,
     'video': {
       facingMode: 'user',
       width: mobile ? undefined : videoWidth,
       height: mobile ? undefined: videoHeight}
-  });
-  video.srcObject = stream;
+  })
+  video.srcObject = stream
 
   return new Promise(resolve => {
     video.onloadedmetadata = () => {
-      resolve(video);
-    };
-  });
+      resolve(video)
+    }
+  })
 }
 
 async function loadVideo() {
-  const video = await setupCamera();
-  video.play();
+  const video = await setupCamera()
+  video.play()
 
-  return video;
+  return video
 }
 
 const guiState = {
@@ -103,7 +103,7 @@ const guiState = {
     showPoints: true,
   },
   net: null,
-};
+}
 
 /**
  * Sets up dat.gui controller on the top-right of the window
@@ -120,7 +120,7 @@ function setupGui(cameras, net) {
     return result;
   }, {});
 
-  const gui = new dat.GUI({ width: 300 });
+  const gui = new dat.GUI({ width: 300, autoPlace: false  })
 
   // The single-pose algorithm is faster and simpler but requires only one person to be
   // in the frame or results will be innaccurate. Multi-pose works for more than 1 person
@@ -139,7 +139,7 @@ function setupGui(cameras, net) {
   input.add(guiState.input, 'outputStride', [8, 16, 32]);
   // Image scale factor: What to scale the image by before feeding it through the network.
   input.add(guiState.input, 'imageScaleFactor').min(0.2).max(1.0);
-  input.open();
+  //input.open();
 
   // Pose confidence: the overall confidence in the estimation of a person's
   // pose (i.e. a person detected in a frame)
@@ -148,7 +148,7 @@ function setupGui(cameras, net) {
   let single = gui.addFolder('Single Pose Detection');
   single.add(guiState.singlePoseDetection, 'minPoseConfidence', 0.0, 1.0);
   single.add(guiState.singlePoseDetection, 'minPartConfidence', 0.0, 1.0);
-  single.open();
+  //single.open();
 
   let multi = gui.addFolder('Multi Pose Detection');
   multi.add(
@@ -163,7 +163,7 @@ function setupGui(cameras, net) {
   output.add(guiState.output, 'showVideo');
   output.add(guiState.output, 'showSkeleton');
   output.add(guiState.output, 'showPoints');
-  output.open();
+  //output.open();
 
 
   architectureController.onChange(function (architecture) {
@@ -199,7 +199,7 @@ function setupFPS() {
 function detectPoseInRealTime(video, net) {
   const canvas = document.getElementById('output');
   const ctx = canvas.getContext('2d');
-  const flipHorizontal = true; // since images are being fed from a webcam
+  const flipHorizontal = false; // since images are being fed from a webcam
 
   canvas.width = videoWidth;
   canvas.height = videoHeight;
