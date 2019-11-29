@@ -207,7 +207,7 @@ function setupFPS() {
 function detectPoseInRealTime(video, net) {
   const canvas = document.getElementById('output')
   const ctx = canvas.getContext('2d')
-  const flipHorizontal = false // since images are being fed from a webcam
+  const flipPoseHorizontal = true // since images are being fed from a webcam
 
   canvas.width = videoWidth
   canvas.height = videoHeight
@@ -234,6 +234,7 @@ function detectPoseInRealTime(video, net) {
     let poses = []
     // console.log(poses)
     // console.log(poses.keypoints)
+
     ctx.fillStyle = `rgba(250,250,250,1)`
     ctx.fillRect(100, 200, 70, 70)
 
@@ -257,21 +258,28 @@ function detectPoseInRealTime(video, net) {
     let minPartConfidence
     switch (guiState.algorithm) {
       case 'single-pose':
-        const pose = await guiState.net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride);
+      const pose = await guiState.net.estimatePoses(video, {
+        flipHorizontal: flipPoseHorizontal,
+        decodingMethod: 'single-person'
+      });
+
         poses.push(pose);
         // console.log(pose.keypoints)
         //color = `rgba(${pose.keypoints[9].position.x/100},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`
 
         //left square
-        if(pose.keypoints[9].position.x > 100  && pose.keypoints[9].position.x < 170 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+        console.log(poses.length)
+        console.log(poses)
+        if(poses.length>= 1){
+        if(poses[0][0].keypoints[9].position.x > 100  && poses[0][0].keypoints[9].position.x < 170 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya')
           sampler.triggerAttackRelease('D3', 1)
 
         }
         // 2nd square
-        if(pose.keypoints[9].position.x > 300  && pose.keypoints[9].position.x < 370 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+        if(poses[0][0].keypoints[9].position.x > 300  && poses[0][0].keypoints[9].position.x < 370 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
           sampler.triggerAttackRelease('E3', 1)
 
@@ -279,40 +287,40 @@ function detectPoseInRealTime(video, net) {
 
 
         // 3nd square
-        if(pose.keypoints[9].position.x > 500  && pose.keypoints[9].position.x < 570 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+        if(poses[0][0].keypoints[9].position.x > 500  && poses[0][0].keypoints[9].position.x < 570 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
           sampler.triggerAttackRelease('F3', 1)
 
         }
 
 
-        if(pose.keypoints[9].position.x > 700  && pose.keypoints[9].position.x < 770 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+        if(poses[0][0].keypoints[9].position.x > 700  && poses[0][0].keypoints[9].position.x < 770 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
           sampler.triggerAttackRelease('G3', 1)
 
         }
 
-        if(pose.keypoints[9].position.x > 900  && pose.keypoints[9].position.x < 970 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+        if(poses[0][0].keypoints[9].position.x > 900  && poses[0][0].keypoints[9].position.x < 970 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
+          //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
           sampler.triggerAttackRelease('A5', 1)
 
         }
 
 
-        if(pose.keypoints[9].position.x > 1100  && pose.keypoints[9].position.x < 1170 && pose.keypoints[9].position.y > 200  && pose.keypoints[9].position.y < 270  ||  pose.keypoints[10].position.x > 100  && pose.keypoints[10].position.x < 170 && pose.keypoints[10].position.y > 200  && pose.keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((pose.keypoints[9].position.y/100 )* pose.keypoints[9].position.x,0.01)
+        if(poses[0][0].keypoints[9].position.x > 1100  && poses[0][0].keypoints[9].position.x < 1170 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
+          synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
-          sampler.triggerAttackRelease('A9', 1)
+          //sampler.triggerAttackRelease('A9', 1)
 
         }
 
 
 
 
-
+}
 
 
 
@@ -325,7 +333,7 @@ function detectPoseInRealTime(video, net) {
           guiState.singlePoseDetection.minPartConfidence)
         break
       case 'multi-pose':
-        poses = await guiState.net.estimateMultiplePoses(video, imageScaleFactor, flipHorizontal, outputStride,
+        poses = await guiState.net.estimateMultiplePoses(video, imageScaleFactor, flipPoseHorizontal, outputStride,
           guiState.multiPoseDetection.maxPoseDetections,
           guiState.multiPoseDetection.minPartConfidence,
           guiState.multiPoseDetection.nmsRadius)
@@ -349,13 +357,13 @@ function detectPoseInRealTime(video, net) {
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
     // scores
-    poses.forEach(({ score, keypoints }) => {
+    poses[0].forEach(({ score, keypoints }) => {
       if (score >= minPoseConfidence) {
         if (guiState.output.showPoints) {
           drawKeypoints(keypoints, minPartConfidence, ctx)
         }
         if (guiState.output.showSkeleton) {
-          drawSkeleton(keypoints, minPartConfidence, ctx);
+          drawSkeleton(keypoints, minPartConfidence, ctx)
         }
       }
     })
@@ -371,7 +379,7 @@ function detectPoseInRealTime(video, net) {
 
     ctx.fillStyle = grd2
     ctx.globalAlpha = 0.3
-    ctx.fillRect(0, 0, videoWidth, videoHeight);
+    ctx.fillRect(0, 0, videoWidth, videoHeight)
     ctx.globalAlpha = 0.8
     ctx.fillStyle = `rgba(250,250,250,1)`
     ctx.fillRect(100, 200, 70, 70)
@@ -404,29 +412,29 @@ function detectPoseInRealTime(video, net) {
  */
 export async function bindPage() {
   // Load the PoseNet model weights for version 1.01
-  const net = await posenet.load();
+  const net = await posenet.load()
 
   // document.getElementById('loading').style.display = 'none';
   // document.getElementById('main').style.display = 'block';
 
-  let video;
+  let video
 
   try {
     video = await loadVideo();
   } catch(e) {
-    let info = document.getElementById('info');
-    info.textContent = "this browser does not support video capture, or this device does not have a camera";
-    info.style.display = 'block';
-    throw e;
+    let info = document.getElementById('info')
+    info.textContent = 'this browser does not support video capture, or this device does not have a camera'
+    info.style.display = 'block'
+    throw e
   }
 
-  setupGui([], net);
-  setupFPS();
+  setupGui([], net)
+  setupFPS()
   detectPoseInRealTime(video, net)
-  ;
+
 }
 
 navigator.getUserMedia = navigator.getUserMedia ||
   navigator.webkitGetUserMedia ||
-  navigator.mozGetUserMedia;
-bindPage(); // kick off the demo
+  navigator.mozGetUserMedia
+bindPage() /// kick off the demo
