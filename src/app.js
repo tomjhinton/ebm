@@ -20,10 +20,14 @@ synthA.attack = 0.01
 
 var sampler = new Tone.Sampler({
   'C3': 'samples/Clap.wav',
-  'D#3': 'samples/Kick.wav',
-  'F#3': 'samples/Snare.wav'
+  'D3': 'samples/Kick.wav',
+  'F3': 'samples/Snare.wav',
+  'A3': 'samples/estec.aif',
+  'E3': 'samples/wood.wav',
+  'G3': 'samples/daiko.wav'
 
 }, function(){
+  console.log('loaded')
   //sampler will repitch the closest sample
   //sampler.triggerAttack("D3")
 }).toMaster()
@@ -268,20 +272,20 @@ function detectPoseInRealTime(video, net) {
         //color = `rgba(${pose.keypoints[9].position.x/100},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`
 
         //left square
-        console.log(poses.length)
-        console.log(poses)
+        // console.log(poses.length)
+        // console.log(poses)
         if(poses.length>= 1){
         if(poses[0][0].keypoints[9].position.x > 100  && poses[0][0].keypoints[9].position.x < 170 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
-          //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
+          synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya')
-          sampler.triggerAttackRelease('D3', 1)
+          sampler.triggerAttackRelease('C3', 1)
 
         }
         // 2nd square
         if(poses[0][0].keypoints[9].position.x > 300  && poses[0][0].keypoints[9].position.x < 370 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
           //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
-          sampler.triggerAttackRelease('E3', 1)
+          sampler.triggerAttackRelease('D3', 1)
 
         }
 
@@ -305,7 +309,7 @@ function detectPoseInRealTime(video, net) {
         if(poses[0][0].keypoints[9].position.x > 900  && poses[0][0].keypoints[9].position.x < 970 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
           //synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
-          sampler.triggerAttackRelease('A5', 1)
+          sampler.triggerAttackRelease('A3', 1)
 
         }
 
@@ -313,7 +317,7 @@ function detectPoseInRealTime(video, net) {
         if(poses[0][0].keypoints[9].position.x > 1100  && poses[0][0].keypoints[9].position.x < 1170 && poses[0][0].keypoints[9].position.y > 200  && poses[0][0].keypoints[9].position.y < 270  ||  poses[0][0].keypoints[10].position.x > 100  && poses[0][0].keypoints[10].position.x < 170 && poses[0][0].keypoints[10].position.y > 200  && poses[0][0].keypoints[10].position.y < 270){
           synthA.triggerAttackRelease((poses[0][0].keypoints[9].position.y/100 )* poses[0][0].keypoints[9].position.x,0.01)
           console.log('hiya2')
-          //sampler.triggerAttackRelease('A9', 1)
+          sampler.triggerAttackRelease('E3', 1)
 
         }
 
