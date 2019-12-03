@@ -35,7 +35,7 @@ let head = document.getElementById('head')
 var options = {
   strings: ['<i>First</i> sentence.', 'EBM: POSENET &amp; TONE.js controlled NOISE'],
   typeSpeed: 40,
-  showCursor: true
+  showCursor: false
 }
 
 var typed = new Typed(head, options)
